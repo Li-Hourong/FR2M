@@ -235,7 +235,7 @@
         
   
   <span class="md-ellipsis">
-    DS&Algorithm
+    Data Structure and Algorithm
   </span>
   
 
@@ -412,6 +412,54 @@
       Asymmetric Encryption
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="Asymmetric Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      RSA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encipher-and-decipher-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encipher and decipher process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical foundation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecc" class="md-nav__link">
+    <span class="md-ellipsis">
+      ECC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -591,6 +639,54 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="Asymmetric Encryption">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#rsa" class="md-nav__link">
+    <span class="md-ellipsis">
+      RSA
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="RSA">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#encipher-and-decipher-process" class="md-nav__link">
+    <span class="md-ellipsis">
+      Encipher and decipher process
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#mathematical-foundation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mathematical foundation
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#ecc" class="md-nav__link">
+    <span class="md-ellipsis">
+      ECC
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
       </ul>
@@ -626,15 +722,49 @@
 1 0 1 1 0 &emsp; 0<br />
 0 1 1 1 0 &emsp; 1  </p>
 <p>0 0 1 0 1 &emsp; 0<br />
-We can fold the whole sequence into a 3*5 table, and for each row and column the sender set one parity bit, so that the number of 1 in every row and column should be even. From the example shown, we can easily find the 0 at (2,2) should be 1.  </p>
+The sender can fold the whole sequence into a 3*5 table, and for each row and column set one parity bit, so that the number of 1 in every row and column should be even. So we get an additional parity row and an additonal parity colomn. From the example shown, we can easily find the 0 at (2,2) should be 1.
+This kind of ability to detect and correct errors is called Forward Error Correction(FEC). </p>
 </blockquote>
-<p>This kind of ability to detect and correct errors is called Forward Error Correction(FEC). </p>
 <h3 id="checksum">Checksum</h3>
 <h3 id="crc">CRC</h3>
 <h2 id="encryption">Encryption</h2>
 <p>The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are <strong>Symmetric Encryption</strong> and <strong>Asymmetric Encryption</strong>.  </p>
 <h3 id="symmetric-encryption">Symmetric Encryption</h3>
+<p>Caeser encryption is a typical symmetric encryption method. The sender and the receiver take a number <em>X</em> they all know before passing meassages. For every character in the message, the sender change it by the character <em>X</em> position after the original one in the alphabet. For instance, if they choose <em>X</em> = 2, then all 'a' in the message will be replaced by 'c',and 'b' will be replaced by 'd', and so on. When the receiver get the message, they should replace on the opposite direction, that is replace 'c' by 'a', 'd' by 'b', and so on.
+So the sender and the receiver use the same way to encipher and decipher in symmetric encryption.<br />
+However these encryption methods have some problems and are easy to hack. Since the <em>X</em> must be decided and known by both sender an receiver, but how should we pass the <em>X</em> secretly? And the hacker can easily guess the <em>X</em> since the pattern is not complicated.</p>
 <h3 id="asymmetric-encryption">Asymmetric Encryption</h3>
+<p>To explain what 'asymmetric' mean here, let's use the caeser encryption example again. To make an analogy, it's like the sender replaces 'a' by 'c' to encipher, but the receiver uses 'c'by 'b' to decipher. But how does that even possible? Let's dive into 2 actual asymmetric encryption methods: RSA and ECC.  </p>
+<h4 id="rsa">RSA</h4>
+<p>RSA encryption is named after the name of the 3 inventers. It widely used in Internet(for example SSH protocal).  </p>
+<h5 id="encipher-and-decipher-process">Encipher and decipher process</h5>
+<p>First, the sender pick 2 prime number <em>p</em> and <em>q</em>, for example <em>p</em> = 61, <em>q</em> = 53. Then calculate <em>n</em> = <em>pq</em> and ϕ(<em>n</em>) = (<em>p</em>-1) * (<em>q</em>-1), in our example <em>n</em> = 3233 and ϕ(<em>n</em>) = 3120.<br />
+Second, pick the <strong>public key</strong> (<em>e</em>,<em>n</em>) <br />
+so that 1&lt; <em>e</em> &lt; ϕ(<em>n</em>) and gcd(<em>e</em>,ϕ(<em>n</em>))=1(which means <em>e</em> and ϕ(<em>n</em>) are relatively prime). In our example, suppose we choose <em>e</em> = 17.<br />
+Next, calculate the <strong>private key</strong> (<em>d</em>,<em>n</em>)<br />
+<em>d</em> should fit the formula: <em>e</em> * <em>d</em> ≡ 1(mod ϕ(<em>n</em>)), in our example we need to get <em>d</em> from 17 * <em>d</em> ≡ 1(mod 3120), which is 2753(will be explained later).
+Before passing message, both sides should generate their own public key:<br />
+(<em>e<sub>1</sub></em>,<em>n</em>), (<em>e<sub>2</sub></em>,<em>n</em>)<br />
+and private key: (<em>d<sub>1</sub></em>,<em>n</em>), (<em>d<sub>2</sub></em>,<em>n</em>).<br />
+Then both sides should exchange their public key and keep their private key secret.<br />
+To encipher message(let's say the number <em>X</em> = 65 is to be enciphered), the sender needs to calculate using the receiver's public key <em>e<sub>2</sub></em>. And X<sup><em>e<sub>2</sub></em></sup> mod n = <em>Y</em> (65<sup>17</sup> mod 3233 = 2790) is the final enciphered result.<br />
+To decipher the result, the receiver need it's own private key <em>d<sub>2</sub></em>. The deciphered result<br />
+<em>Z</em> = <em>Y</em><sup><em>d<sub>2</sub></em></sup> mod <em>n</em> = 2790<sup>2753</sup> mod 3233 = 65 = <em>X</em></p>
+<h5 id="mathematical-foundation">Mathematical foundation</h5>
+<p>During the process of generating public key <em>e</em> and private key <em>d</em>, the concept of <strong>modular inverse</strong>. Specifically, <em>e</em> and <em>d</em> are the modular inverse about ϕ(<em>n</em>) of each other, fitting <em>e</em> * <em>d</em> ≡ 1 (mod ϕ(n)).<br />
+From <br />
+<em>e</em> * <em>d</em> ≡ 1 (mod ϕ(n))<br />
+we can infer that<br />
+<em>e</em> * <em>d</em> − 1 = k * ϕ(n)(k is some integer).<br />
+So during encryption, <em>Y</em> = <em>X</em><sup><em>e</em></sup> mod <em>n</em> and during decryption<br />
+<em>Z</em> = <em>Y</em><sup><em>d</em></sup> mod <em>n</em> = (<em>X</em><sup><em>e</em></sup> mod <em>n</em>)<sup><em>d</em></sup> mod <em>n</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em>.<br />
+Since <em>e</em> * <em>d</em> − 1 = k * ϕ(n),<br />
+<em>X</em><sup><em>ed</em></sup> = <em>X</em><sup>1+kϕ(<em>n</em>) = <em>X</em> * (<em>X</em><sup>ϕ(<em>n</em>)</sup>)<sup>k</sup><br />
+According to Euler's theory, if <em>X</em> and <em>n</em> are relatively prime,<br />
+<em>X</em><sup>ϕ(<em>n</em>)</sup> ≡ 1 (mod <em>n</em>).<br />
+So <em>X</em><sup><em>ed</em></sup> ≡ <em>X</em> * 1<sup>k</sup> ≡ <em>X</em> (mod <em>n</em>). Which means <br />
+<em>Z</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em> =<em>X</em></p>
+<h4 id="ecc">ECC</h4>
 
 
 
