@@ -382,6 +382,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -439,6 +448,15 @@
   <a href="#mathematical-foundation" class="md-nav__link">
     <span class="md-ellipsis">
       Mathematical foundation
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#eulers-theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's theory
     </span>
   </a>
   
@@ -608,6 +626,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#raid" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -670,6 +697,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#eulers-theory" class="md-nav__link">
+    <span class="md-ellipsis">
+      Euler's theory
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -709,7 +745,7 @@
                   
 
 
-<h1 id="verification-encryption">Verification &amp; Encryption</h1>
+<h1 id="verification-encryption"><strong>Verification &amp; Encryption</strong></h1>
 <h2 id="verification">Verification</h2>
 <p>When information is tranmitted from the sender to the receiver, the receiver needs a method to check whether the information was changed during the transportation. Then we need to consider if we can recover the change. The same thing happens when information is stored somewhere like a disk, and after a period of time the information may get lost. So the problem is about three things: whether the information is changed, where the changes happened and how can we recover it.  </p>
 <h3 id="parity">Parity</h3>
@@ -717,16 +753,20 @@
 <p>However only one additional bit can only tell the receiver whether the information is damaged, but not where the damage happens. So two-dimensional parity took place, and it can correct single-bit error in a sequence.  </p>
 <blockquote>
 <h3 id="two-dimensional-parity">Two-dimensional Parity</h3>
-<p>Suppose a single bit was changed in a sequence of <em>d</em> digits 1/0 sequence during transmission. To detect the position of the error, we may make a table like this:(suppose <em>d</em> = 15)<br />
-1 0 1 0 1 &emsp; 1<br />
+<p>Suppose a single bit was changed in a sequence of <em>d</em> digits 1/0 sequence during transmission. To detect the position of the error, we may make a table like this:(suppose <em>d</em> = 15)  </p>
+<p>1 0 1 0 1 &emsp; 1<br />
 1 0 1 1 0 &emsp; 0<br />
 0 1 1 1 0 &emsp; 1  </p>
-<p>0 0 1 0 1 &emsp; 0<br />
-The sender can fold the whole sequence into a 3*5 table, and for each row and column set one parity bit, so that the number of 1 in every row and column should be even. So we get an additional parity row and an additonal parity colomn. From the example shown, we can easily find the 0 at (2,2) should be 1.
+<p>0 0 1 0 1 &emsp; 0  </p>
+<p>The sender can fold the whole sequence into a 3*5 table, and for each row and column set one parity bit, so that the number of 1 in every row and column should be even. So we get an additional parity row and an additonal parity colomn. From the example shown, we can easily find the 0 at (2,2) should be 1.
 This kind of ability to detect and correct errors is called Forward Error Correction(FEC). </p>
 </blockquote>
 <h3 id="checksum">Checksum</h3>
+<p>In the checksum verification, the whole <em>d</em> bit message is regarded as a sequence of <em>k</em> bit integer. Take Internet checksum as an example, the message is divided into 16 bits integer and the sequence of integer will be added together to generate the final checksum.The checksum will be passed together with the original message. After receiving the result, the receiver only needs to do the same operation and check if the sum is the same with the passed checksum. If not, then either the checksum or the message is changed during transmission.<br />
+Checksum is actually a way of hashing the message. However these hashing methods provide a weak protection despite its low cost. Since we can't tell where the error happens and can't recover it.  So in the actual internet, the TCP and UDP use checksum while the link layer protocals use CRC.</p>
 <h3 id="crc">CRC</h3>
+<p>CRC is the abbr. of <strong>Cyclic Redundancy Check</strong></p>
+<h3 id="raid">RAID</h3>
 <h2 id="encryption">Encryption</h2>
 <p>The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are <strong>Symmetric Encryption</strong> and <strong>Asymmetric Encryption</strong>.  </p>
 <h3 id="symmetric-encryption">Symmetric Encryption</h3>
@@ -748,7 +788,7 @@ Before passing message, both sides should generate their own public key:<br />
 and private key: (<em>d<sub>1</sub></em>,<em>n</em>), (<em>d<sub>2</sub></em>,<em>n</em>).<br />
 Then both sides should exchange their public key and keep their private key secret.<br />
 To encipher message(let's say the number <em>X</em> = 65 is to be enciphered), the sender needs to calculate using the receiver's public key <em>e<sub>2</sub></em>. And X<sup><em>e<sub>2</sub></em></sup> mod n = <em>Y</em> (65<sup>17</sup> mod 3233 = 2790) is the final enciphered result.<br />
-To decipher the result, the receiver need it's own private key <em>d<sub>2</sub></em>. The deciphered result<br />
+To decipher the result <em>Y</em>, the receiver need it's own private key <em>d<sub>2</sub></em>. The deciphered result<br />
 <em>Z</em> = <em>Y</em><sup><em>d<sub>2</sub></em></sup> mod <em>n</em> = 2790<sup>2753</sup> mod 3233 = 65 = <em>X</em></p>
 <h5 id="mathematical-foundation">Mathematical foundation</h5>
 <p>During the process of generating public key <em>e</em> and private key <em>d</em>, the concept of <strong>modular inverse</strong>. Specifically, <em>e</em> and <em>d</em> are the modular inverse about ϕ(<em>n</em>) of each other, fitting <em>e</em> * <em>d</em> ≡ 1 (mod ϕ(n)).<br />
@@ -759,12 +799,26 @@ we can infer that<br />
 So during encryption, <em>Y</em> = <em>X</em><sup><em>e</em></sup> mod <em>n</em> and during decryption<br />
 <em>Z</em> = <em>Y</em><sup><em>d</em></sup> mod <em>n</em> = (<em>X</em><sup><em>e</em></sup> mod <em>n</em>)<sup><em>d</em></sup> mod <em>n</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em>.<br />
 Since <em>e</em> * <em>d</em> − 1 = k * ϕ(n),<br />
-<em>X</em><sup><em>ed</em></sup> = <em>X</em><sup>1+kϕ(<em>n</em>) = <em>X</em> * (<em>X</em><sup>ϕ(<em>n</em>)</sup>)<sup>k</sup><br />
+<em>X</em><sup><em>ed</em></sup> = <em>X</em><sup>1+kϕ(<em>n</em>)</sup> = <em>X</em> * (<em>X</em><sup>ϕ(<em>n</em>)</sup>)<sup>k</sup><br />
 According to Euler's theory, if <em>X</em> and <em>n</em> are relatively prime,<br />
 <em>X</em><sup>ϕ(<em>n</em>)</sup> ≡ 1 (mod <em>n</em>).<br />
 So <em>X</em><sup><em>ed</em></sup> ≡ <em>X</em> * 1<sup>k</sup> ≡ <em>X</em> (mod <em>n</em>). Which means <br />
-<em>Z</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em> =<em>X</em></p>
+<em>Z</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em> =<em>X</em> mod <em>n</em> = <em>X</em><br />
+(<em>X</em> should be guaranteed to be smaller than <em>n</em>) </p>
+<blockquote>
+<h5 id="eulers-theory">Euler's theory</h5>
+<p>Euler's theory claims that if a and b are 2 integer that are relatively prime(gcd(a,b) = 0), they fit the following fomular:<br />
+a<sup>ϕ(b)</sup> ≡ 1 (mod b) <br />
+(ϕ(b) is a function that equals to the number of positive integers that are smaller than b but are relatively prime with b)<br />
+In RSA algorithm, <em>n</em> is the multiplication of 2 prime number <em>p</em> and <em>q</em>, so only the multiple of <em>p</em> and <em>q</em> are not prime with <em>n</em>. So ϕ(b) = (<em>p</em>-1) * (<em>q</em>-1)</p>
+</blockquote>
 <h4 id="ecc">ECC</h4>
+<p>ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on elliptic curve. Don't mess elliptic curve with ellipse. 
+Elliptic curves get it's name from the elliptic integral and look no similar like ellipse.
+The general representation of elliptic curves is:<br />
+<em>y</em><sup>2</sup> = <em>x</em><sup>3</sup> + a<em>x</em> + b (a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0)<br />
+<img alt="elliptic curve" src="../images/elliptic%20curve.png" /><br />
+The elliptic curves have some significant properties:  </p>
 
 
 

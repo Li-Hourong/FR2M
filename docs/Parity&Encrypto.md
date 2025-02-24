@@ -1,4 +1,4 @@
-# Verification & Encryption
+# **Verification & Encryption**
 ## Verification
 When information is tranmitted from the sender to the receiver, the receiver needs a method to check whether the information was changed during the transportation. Then we need to consider if we can recover the change. The same thing happens when information is stored somewhere like a disk, and after a period of time the information may get lost. So the problem is about three things: whether the information is changed, where the changes happened and how can we recover it.  
 
@@ -8,19 +8,24 @@ Odd-even Parity is the simpliest way of parity. Suppose you have a sequence of 1
 However only one additional bit can only tell the receiver whether the information is damaged, but not where the damage happens. So two-dimensional parity took place, and it can correct single-bit error in a sequence.  
 > ### Two-dimensional Parity
 >Suppose a single bit was changed in a sequence of *d* digits 1/0 sequence during transmission. To detect the position of the error, we may make a table like this:(suppose *d* = 15)  
+>
 >1 0 1 0 1 &emsp; 1  
 >1 0 1 1 0 &emsp; 0  
 >0 1 1 1 0 &emsp; 1  
 >  
 >0 0 1 0 1 &emsp; 0  
+>
 >The sender can fold the whole sequence into a 3*5 table, and for each row and column set one parity bit, so that the number of 1 in every row and column should be even. So we get an additional parity row and an additonal parity colomn. From the example shown, we can easily find the 0 at (2,2) should be 1.
 This kind of ability to detect and correct errors is called Forward Error Correction(FEC). 
 
 ### Checksum
-
+In the checksum verification, the whole *d* bit message is regarded as a sequence of *k* bit integer. Take Internet checksum as an example, the message is divided into 16 bits integer and the sequence of integer will be added together to generate the final checksum.The checksum will be passed together with the original message. After receiving the result, the receiver only needs to do the same operation and check if the sum is the same with the passed checksum. If not, then either the checksum or the message is changed during transmission.  
+Checksum is actually a way of hashing the message. However these hashing methods provide a weak protection despite its low cost. Since we can't tell where the error happens and can't recover it.  So in the actual internet, the TCP and UDP use checksum while the link layer protocals use CRC.
 
 ### CRC 
+CRC is the abbr. of **Cyclic Redundancy Check**
 
+### RAID
 
 ## Encryption
 The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are **Symmetric Encryption** and **Asymmetric Encryption**.  
@@ -45,7 +50,7 @@ Before passing message, both sides should generate their own public key:
 and private key: (*d<sub>1</sub>*,*n*), (*d<sub>2</sub>*,*n*).  
 Then both sides should exchange their public key and keep their private key secret.  
 To encipher message(let's say the number *X* = 65 is to be enciphered), the sender needs to calculate using the receiver's public key *e<sub>2</sub>*. And X<sup>*e<sub>2</sub>*</sup> mod n = *Y* (65<sup>17</sup> mod 3233 = 2790) is the final enciphered result.  
-To decipher the result, the receiver need it's own private key *d<sub>2</sub>*. The deciphered result  
+To decipher the result *Y*, the receiver need it's own private key *d<sub>2</sub>*. The deciphered result  
 *Z* = *Y*<sup>*d<sub>2</sub>*</sup> mod *n* = 2790<sup>2753</sup> mod 3233 = 65 = *X*
 
 ##### Mathematical foundation
@@ -57,10 +62,23 @@ we can infer that
 So during encryption, *Y* = *X*<sup>*e*</sup> mod *n* and during decryption  
 *Z* = *Y*<sup>*d*</sup> mod *n* = (*X*<sup>*e*</sup> mod *n*)<sup>*d*</sup> mod *n* = *X*<sup>*ed*</sup> mod *n*.  
 Since *e* * *d* − 1 = k * ϕ(n),  
-*X*<sup>*ed*</sup> = *X*<sup>1+kϕ(*n*) = *X* * (*X*<sup>ϕ(*n*)</sup>)<sup>k</sup>  
+*X*<sup>*ed*</sup> = *X*<sup>1+kϕ(*n*)</sup> = *X* * (*X*<sup>ϕ(*n*)</sup>)<sup>k</sup>  
 According to Euler's theory, if *X* and *n* are relatively prime,  
 *X*<sup>ϕ(*n*)</sup> ≡ 1 (mod *n*).  
 So *X*<sup>*ed*</sup> ≡ *X* * 1<sup>k</sup> ≡ *X* (mod *n*). Which means   
-*Z* = *X*<sup>*ed*</sup> mod *n* =*X*
+*Z* = *X*<sup>*ed*</sup> mod *n* =*X* mod *n* = *X*  
+(*X* should be guaranteed to be smaller than *n*) 
+>##### Euler's theory
+>Euler's theory claims that if a and b are 2 integer that are relatively prime(gcd(a,b) = 0), they fit the following fomular:  
+a<sup>ϕ(b)</sup> ≡ 1 (mod b)   
+(ϕ(b) is a function that equals to the number of positive integers that are smaller than b but are relatively prime with b)  
+In RSA algorithm, *n* is the multiplication of 2 prime number *p* and *q*, so only the multiple of *p* and *q* are not prime with *n*. So ϕ(b) = (*p*-1) * (*q*-1)
 
 #### ECC
+ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on elliptic curve. Don't mess elliptic curve with ellipse. 
+Elliptic curves get it's name from the elliptic integral and look no similar like ellipse.
+The general representation of elliptic curves is:  
+*y*<sup>2</sup> = *x*<sup>3</sup> + a*x* + b (a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0)  
+![elliptic curve](images/elliptic curve.png)  
+The elliptic curves have some significant properties:  
+
