@@ -462,6 +462,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fast-power-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fast Power algorithm
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -706,6 +715,15 @@
   
 </li>
         
+          <li class="md-nav__item">
+  <a href="#fast-power-algorithm" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fast Power algorithm
+    </span>
+  </a>
+  
+</li>
+        
       </ul>
     </nav>
   
@@ -781,11 +799,12 @@ However these encryption methods have some problems and are easy to hack. Since 
 <p>First, the sender pick 2 prime number <em>p</em> and <em>q</em>, for example <em>p</em> = 61, <em>q</em> = 53. Then calculate <em>n</em> = <em>pq</em> and ϕ(<em>n</em>) = (<em>p</em>-1) * (<em>q</em>-1), in our example <em>n</em> = 3233 and ϕ(<em>n</em>) = 3120.<br />
 Second, pick the <strong>public key</strong> (<em>e</em>,<em>n</em>) <br />
 so that 1&lt; <em>e</em> &lt; ϕ(<em>n</em>) and gcd(<em>e</em>,ϕ(<em>n</em>))=1(which means <em>e</em> and ϕ(<em>n</em>) are relatively prime). In our example, suppose we choose <em>e</em> = 17.<br />
-Next, calculate the <strong>private key</strong> (<em>d</em>,<em>n</em>)<br />
-<em>d</em> should fit the formula: <em>e</em> * <em>d</em> ≡ 1(mod ϕ(<em>n</em>)), in our example we need to get <em>d</em> from 17 * <em>d</em> ≡ 1(mod 3120), which is 2753(will be explained later).
+Next, calculate the <strong>private key</strong> (<em>d</em>,<em>n</em>) using <strong>Extended Euclidean Algorithm</strong>  <br />
+<em>d</em> should fit the formula: <em>e</em> * <em>d</em> ≡ 1(mod ϕ(<em>n</em>)), in our example we need to get <em>d</em> from 17 * <em>d</em> ≡ 1(mod 3120), which is 2753.
 Before passing message, both sides should generate their own public key:<br />
 (<em>e<sub>1</sub></em>,<em>n</em>), (<em>e<sub>2</sub></em>,<em>n</em>)<br />
-and private key: (<em>d<sub>1</sub></em>,<em>n</em>), (<em>d<sub>2</sub></em>,<em>n</em>).<br />
+and private key:<br />
+(<em>d<sub>1</sub></em>,<em>n</em>), (<em>d<sub>2</sub></em>,<em>n</em>).<br />
 Then both sides should exchange their public key and keep their private key secret.<br />
 To encipher message(let's say the number <em>X</em> = 65 is to be enciphered), the sender needs to calculate using the receiver's public key <em>e<sub>2</sub></em>. And X<sup><em>e<sub>2</sub></em></sup> mod n = <em>Y</em> (65<sup>17</sup> mod 3233 = 2790) is the final enciphered result.<br />
 To decipher the result <em>Y</em>, the receiver need it's own private key <em>d<sub>2</sub></em>. The deciphered result<br />
@@ -804,21 +823,40 @@ According to Euler's theory, if <em>X</em> and <em>n</em> are relatively prime,<
 <em>X</em><sup>ϕ(<em>n</em>)</sup> ≡ 1 (mod <em>n</em>).<br />
 So <em>X</em><sup><em>ed</em></sup> ≡ <em>X</em> * 1<sup>k</sup> ≡ <em>X</em> (mod <em>n</em>). Which means <br />
 <em>Z</em> = <em>X</em><sup><em>ed</em></sup> mod <em>n</em> =<em>X</em> mod <em>n</em> = <em>X</em><br />
-(<em>X</em> should be guaranteed to be smaller than <em>n</em>) </p>
+(<em>X</em> should be guaranteed to be smaller than <em>n</em>) <br />
+To hack RSA, the private key <em>d<sub>2</sub></em> is a must. However, this is nearly impossible(at least now). You either break down <em>n</em> into <em>p</em> and <em>q</em> so that you can get ϕ(<em>n</em>), or you have to try all the possible <em>d2</em>. The difficulty of breaking big numbers into prime numbers gives RSA algorithm its unbreakable safety.</p>
 <blockquote>
 <h5 id="eulers-theory">Euler's theory</h5>
 <p>Euler's theory claims that if a and b are 2 integer that are relatively prime(gcd(a,b) = 0), they fit the following fomular:<br />
 a<sup>ϕ(b)</sup> ≡ 1 (mod b) <br />
 (ϕ(b) is a function that equals to the number of positive integers that are smaller than b but are relatively prime with b)<br />
-In RSA algorithm, <em>n</em> is the multiplication of 2 prime number <em>p</em> and <em>q</em>, so only the multiple of <em>p</em> and <em>q</em> are not prime with <em>n</em>. So ϕ(b) = (<em>p</em>-1) * (<em>q</em>-1)</p>
+In RSA algorithm, <em>n</em> is the multiplication of 2 prime number <em>p</em> and <em>q</em>, so only the multiple of <em>p</em> and <em>q</em> are not prime with <em>n</em>. So ϕ(b) = (<em>p</em>-1) * (<em>q</em>-1)  </p>
+<h5 id="fast-power-algorithm">Fast Power algorithm</h5>
+<p>Calulate powers by simply multiplying is an unefficient way. In RSA, when you need to calculate 2790<sup>2753</sup>, you would certainly want something fast.<br />
+Simly multplying 2790 by 2753 times need a time complexity of O(n), but fast power algorithm gives you O(log n). The operation is like this:<br />
+When you get 2790 * 2790, instead of multiply 2790 again, you should square it. Then square it again. So you can get 2790<sup>8</sup>, 2790<sup>16</sup>, 2790<sup>32</sup>... very quickly.<br />
+However, you can't get 2753 by just the power of 2. So another important operation is to break down the power into the sum of the power of 2.<br />
+For instance, if we want to calculate <em>x</em><sup>11</sup>, we can calculate<br />
+<em>x</em><sup>1</sup> * <em>x</em><sup>2</sup> * <em>x</em><sup>8</sup><br />
+which are all easy to get. </p>
 </blockquote>
 <h4 id="ecc">ECC</h4>
-<p>ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on elliptic curve. Don't mess elliptic curve with ellipse. 
+<p>ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on <strong>Elliptic curves</strong>. Don't mess elliptic curve with ellipse. 
 Elliptic curves get it's name from the elliptic integral and look no similar like ellipse.
 The general representation of elliptic curves is:<br />
-<em>y</em><sup>2</sup> = <em>x</em><sup>3</sup> + a<em>x</em> + b (a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0)<br />
+<em>y</em><sup>2</sup> = <em>x</em><sup>3</sup> + a<em>x</em> + b<br />
+(a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0 to ensure that it has derivative at any point)<br />
 <img alt="elliptic curve" src="../images/elliptic%20curve.png" /><br />
-The elliptic curves have some significant properties:  </p>
+The elliptic curves have a significant property: the points of a elliptic curve form an <strong>Abel Group</strong><br />
+If we pick 2 points(P, Q) on a elliptic curve and draw a line <em>L</em> that goes through these 2 points. Then <em>L</em> will certainly met with the curve at a third point S. Suppose the symmetric point of S about the x axis is R, then we define R = P + Q and R = -S.<br />
+If <em>L</em> has only 2 intersections P and S with the curve, meaning that P, Q merge at one point and P is actually a point of contact. In this case we define R = -S = 2P. Meanwhile we define the point infinite far away as 0 and the symmetric point of P about x axis as -P.<br />
+For any point P on an elliptic curve,  if kP = 0, define the minimum k as the order of P. If k doesn't exist, define k as infinite. So according to this definition, if k exists, (k-1)P and P are symmetric about x axis.  </p>
+<p>Before enciphering, the sender and the receiver use the same curve <em>E</em>. The receiver pick one point G as a base. Then the receiver generates a private key <em>d</em>, which is a random integer smaller than the order of G(the order of G must be a prime number). Followed with the step of calculating S = <em>d</em>G. Finally (<em>E</em>, S, G) will be pass to the sender as the public key.<br />
+To encipher a piece of message, the sender first selects a random number <em>n</em>(smaller than the order of G) and calculates 2 points <em>P</em> = <em>n</em>G and <em>Q</em> = M + <em>n</em>S(<em>M</em> is the message to encipher). Then (<em>P</em>, <em>Q</em>) will be passed.<br />
+To decipher the message, the receiver just need to use its own private key to calculate<br />
+<em>Q</em> - <em>dP</em> = M + <em>n</em>S - <em>dP</em> = M + <em>nd</em>G - <em>dn</em>G = M
+If anyone want to hack using <em>P</em> and <em>Q</em>, figuring out <em>d</em> would be the biggest chanllenge since its so difficult to get <em>d</em> from S and G.  </p>
+<p>I guess it is quite clear how asymmetric encrypto algorithms work. To creat a kind of asymmetric encrypto algorithm, the key step is to find an operation that is easy to perform but with a difficult inverse operation. In RSA, multiplying 2 prime number is easy, but break they from a large number is difficult. In ECC, given k and G, it would be easy to calculate kG, but it is much more difficult to get k from S and G.</p>
 
 
 
