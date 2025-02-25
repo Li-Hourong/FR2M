@@ -43,11 +43,12 @@ RSA encryption is named after the name of the 3 inventers. It widely used in Int
 First, the sender pick 2 prime number *p* and *q*, for example *p* = 61, *q* = 53. Then calculate *n* = *pq* and ϕ(*n*) = (*p*-1) * (*q*-1), in our example *n* = 3233 and ϕ(*n*) = 3120.  
 Second, pick the **public key** (*e*,*n*)   
 so that 1< *e* < ϕ(*n*) and gcd(*e*,ϕ(*n*))=1(which means *e* and ϕ(*n*) are relatively prime). In our example, suppose we choose *e* = 17.  
-Next, calculate the **private key** (*d*,*n*)  
-*d* should fit the formula: *e* * *d* ≡ 1(mod ϕ(*n*)), in our example we need to get *d* from 17 \* *d* ≡ 1(mod 3120), which is 2753(will be explained later).
+Next, calculate the **private key** (*d*,*n*) using **Extended Euclidean Algorithm**    
+*d* should fit the formula: *e* * *d* ≡ 1(mod ϕ(*n*)), in our example we need to get *d* from 17 \* *d* ≡ 1(mod 3120), which is 2753.
 Before passing message, both sides should generate their own public key:  
 (*e<sub>1</sub>*,*n*), (*e<sub>2</sub>*,*n*)  
-and private key: (*d<sub>1</sub>*,*n*), (*d<sub>2</sub>*,*n*).  
+and private key:  
+(*d<sub>1</sub>*,*n*), (*d<sub>2</sub>*,*n*).  
 Then both sides should exchange their public key and keep their private key secret.  
 To encipher message(let's say the number *X* = 65 is to be enciphered), the sender needs to calculate using the receiver's public key *e<sub>2</sub>*. And X<sup>*e<sub>2</sub>*</sup> mod n = *Y* (65<sup>17</sup> mod 3233 = 2790) is the final enciphered result.  
 To decipher the result *Y*, the receiver need it's own private key *d<sub>2</sub>*. The deciphered result  
@@ -67,18 +68,39 @@ According to Euler's theory, if *X* and *n* are relatively prime,
 *X*<sup>ϕ(*n*)</sup> ≡ 1 (mod *n*).  
 So *X*<sup>*ed*</sup> ≡ *X* * 1<sup>k</sup> ≡ *X* (mod *n*). Which means   
 *Z* = *X*<sup>*ed*</sup> mod *n* =*X* mod *n* = *X*  
-(*X* should be guaranteed to be smaller than *n*) 
+(*X* should be guaranteed to be smaller than *n*)   
+To hack RSA, the private key *d<sub>2</sub>* is a must. However, this is nearly impossible(at least now). You either break down *n* into *p* and *q* so that you can get ϕ(*n*), or you have to try all the possible *d2*. The difficulty of breaking big numbers into prime numbers gives RSA algorithm its unbreakable safety.
 >##### Euler's theory
 >Euler's theory claims that if a and b are 2 integer that are relatively prime(gcd(a,b) = 0), they fit the following fomular:  
 a<sup>ϕ(b)</sup> ≡ 1 (mod b)   
 (ϕ(b) is a function that equals to the number of positive integers that are smaller than b but are relatively prime with b)  
-In RSA algorithm, *n* is the multiplication of 2 prime number *p* and *q*, so only the multiple of *p* and *q* are not prime with *n*. So ϕ(b) = (*p*-1) * (*q*-1)
+In RSA algorithm, *n* is the multiplication of 2 prime number *p* and *q*, so only the multiple of *p* and *q* are not prime with *n*. So ϕ(b) = (*p*-1) * (*q*-1)  
+>##### Fast Power algorithm
+>Calulate powers by simply multiplying is an unefficient way. In RSA, when you need to calculate 2790<sup>2753</sup>, you would certainly want something fast.  
+>Simly multplying 2790 by 2753 times need a time complexity of O(n), but fast power algorithm gives you O(log n). The operation is like this:  
+>When you get 2790 * 2790, instead of multiply 2790 again, you should square it. Then square it again. So you can get 2790<sup>8</sup>, 2790<sup>16</sup>, 2790<sup>32</sup>... very quickly.  
+>However, you can't get 2753 by just the power of 2. So another important operation is to break down the power into the sum of the power of 2.  
+>For instance, if we want to calculate *x*<sup>11</sup>, we can calculate  
+>*x*<sup>1</sup> * *x*<sup>2</sup> * *x*<sup>8</sup>  
+>which are all easy to get. 
 
 #### ECC
-ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on elliptic curve. Don't mess elliptic curve with ellipse. 
+ECC, or Elliptic Curve Cryptography, is another asymmetric encryption based on **Elliptic curves**. Don't mess elliptic curve with ellipse. 
 Elliptic curves get it's name from the elliptic integral and look no similar like ellipse.
 The general representation of elliptic curves is:  
-*y*<sup>2</sup> = *x*<sup>3</sup> + a*x* + b (a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0)  
+*y*<sup>2</sup> = *x*<sup>3</sup> + a*x* + b  
+(a, b are constants that fits 4a<sup>3</sup> + 27b<sup>2</sup> ≠ 0 to ensure that it has derivative at any point)  
 ![elliptic curve](images/elliptic curve.png)  
-The elliptic curves have some significant properties:  
+The elliptic curves have a significant property: the points of a elliptic curve form an **Abel Group**  
+If we pick 2 points(P, Q) on a elliptic curve and draw a line *L* that goes through these 2 points. Then *L* will certainly met with the curve at a third point S. Suppose the symmetric point of S about the x axis is R, then we define R = P + Q and R = -S.  
+If *L* has only 2 intersections P and S with the curve, meaning that P, Q merge at one point and P is actually a point of contact. In this case we define R = -S = 2P. Meanwhile we define the point infinite far away as 0 and the symmetric point of P about x axis as -P.  
+For any point P on an elliptic curve,  if kP = 0, define the minimum k as the order of P. If k doesn't exist, define k as infinite. So according to this definition, if k exists, (k-1)P and P are symmetric about x axis.  
 
+Before enciphering, the sender and the receiver use the same curve *E*. The receiver pick one point G as a base. Then the receiver generates a private key *d*, which is a random integer smaller than the order of G(the order of G must be a prime number). Followed with the step of calculating S = *d*G. Finally (*E*, S, G) will be pass to the sender as the public key.  
+To encipher a piece of message, the sender first selects a random number *n*(smaller than the order of G) and calculates 2 points *P* = *n*G and *Q* = M + *n*S(*M* is the message to encipher). Then (*P*, *Q*) will be passed.  
+To decipher the message, the receiver just need to use its own private key to calculate  
+*Q* - *dP* = M + *n*S - *dP* = M + *nd*G - *dn*G = M
+If anyone want to hack using *P* and *Q*, figuring out *d* would be the biggest chanllenge since its so difficult to get *d* from S and G.  
+
+
+I guess it is quite clear how asymmetric encrypto algorithms work. To creat a kind of asymmetric encrypto algorithm, the key step is to find an operation that is easy to perform but with a difficult inverse operation. In RSA, multiplying 2 prime number is easy, but break they from a large number is difficult. In ECC, given k and G, it would be easy to calculate kG, but it is much more difficult to get k from S and G.
