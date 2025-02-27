@@ -23,9 +23,30 @@ In the checksum verification, the whole *d* bit message is regarded as a sequenc
 Checksum is actually a way of hashing the message. However these hashing methods provide a weak protection despite its low cost. Since we can't tell where the error happens and can't recover it.  So in the actual internet, the TCP and UDP use checksum while the link layer protocals use CRC.
 
 ### CRC 
-CRC is the abbr. of **Cyclic Redundancy Check**
+**Cyclic Redundancy Check**, or CRC, is a widely used verification technology in computer network. It is also called **polynomial code** since the message to be passed is regarded as the coefficient of a polynomial.  
+In this situation: if we gonna pass a message of *d* bits, the sender and the receiver must have a shared polynomial of *r* + 1 bits coefficient. This polynomial is called the **generator** G. The highest bit(the first bit from the left) must be 1.  
+For the *d* bits message, the sender must append *r* bits to get *d* + *r* bits binary code. This binary number is exactly divisible by G using mod 2 arithmetic.  
+>#### Mod 2 arithmetic
+>Mod 2 arithmetic is a kind of special binary operations. It also has addition, subtraction, multiplication and division. However it doesn't consider carry and borrowing when adding and substracting numbers, which means that addition and subtraction are the same here. They are all actually XOR by bit.  
+>For example, 1101 + 110 = 1011.  
+>When doing multiplication, there's no carrying so 1001 * 1101 = 1100101. What is useful is multiply 2<sup>k</sup> is actually shifting left for k bits.
+>For division, there's more rules:  
+>When the residual's digit is less than the divider, the operation stops.
+>When the dividend's digit is less than the divider, the quotient equals 0 and the dividend is the residual.  
+
+So the original message M with the appended *r* bits R can be represented by  
+D * 2<sup>*r*</sup> XOR R, which is the multiple of the generator G.  
+To calculate the R for a message M to pass, we just need the residual of  
+(D * 2<sup>*r*</sup>)/G.  
+IEEE has defined the standard generator G for 8, 12, 16 and 32 bits. Every standard can detect the errors less than *r* continuous bits.
 
 ### RAID
+Let's dive into a practical example where verification and correction is used in storage. **Redundant Array of Inexpensive Disks** is a technique that allow computer regard a set of disks as a whole. And it allows damages to some extends and provides solutions to recover the damage depends on the RAID level. Different levels of RAID uses different ways of redundancy to provide different capacity, reliabliity and performance.  
+#### RAID 0 - striping
+#### RAID 1 - mirror
+#### RAID 10 - combined
+#### RAID 4 - parity
+#### RAID 5 - rotated parity
 
 ## Encryption
 The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are **Symmetric Encryption** and **Asymmetric Encryption**.  

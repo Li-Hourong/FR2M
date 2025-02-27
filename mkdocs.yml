@@ -1,3 +1,6 @@
 site_name: From Rookie to Master
 theme:
   name: material
+  palette:
+    scheme: perference
+    primary: black

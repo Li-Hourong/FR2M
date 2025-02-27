@@ -26,6 +26,9 @@
     
       <link rel="stylesheet" href="../assets/stylesheets/main.6f8fc17f.min.css">
       
+        
+        <link rel="stylesheet" href="../assets/stylesheets/palette.06af60db.min.css">
+      
       
 
 
@@ -53,7 +56,12 @@
   </head>
   
   
-    <body dir="ltr">
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="perference" data-md-color-primary="black" data-md-color-accent="indigo">
   
     
     <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
@@ -105,8 +113,8 @@
       </div>
     </div>
     
+      
     
-      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
     
     
     
@@ -380,6 +388,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CRC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mod-2-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mod 2 arithmetic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -388,6 +411,57 @@
       RAID
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raid-0-striping" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 0 - striping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-1-mirror" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 1 - mirror
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-10-combined" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 10 - combined
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-4-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 4 - parity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-5-rotated-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 5 - rotated parity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -633,6 +707,21 @@
     </span>
   </a>
   
+    <nav class="md-nav" aria-label="CRC">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mod-2-arithmetic" class="md-nav__link">
+    <span class="md-ellipsis">
+      Mod 2 arithmetic
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
 </li>
         
           <li class="md-nav__item">
@@ -641,6 +730,57 @@
       RAID
     </span>
   </a>
+  
+    <nav class="md-nav" aria-label="RAID">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#raid-0-striping" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 0 - striping
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-1-mirror" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 1 - mirror
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-10-combined" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 10 - combined
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-4-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 4 - parity
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raid-5-rotated-parity" class="md-nav__link">
+    <span class="md-ellipsis">
+      RAID 5 - rotated parity
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
   
 </li>
         
@@ -783,8 +923,30 @@ This kind of ability to detect and correct errors is called Forward Error Correc
 <p>In the checksum verification, the whole <em>d</em> bit message is regarded as a sequence of <em>k</em> bit integer. Take Internet checksum as an example, the message is divided into 16 bits integer and the sequence of integer will be added together to generate the final checksum.The checksum will be passed together with the original message. After receiving the result, the receiver only needs to do the same operation and check if the sum is the same with the passed checksum. If not, then either the checksum or the message is changed during transmission.<br />
 Checksum is actually a way of hashing the message. However these hashing methods provide a weak protection despite its low cost. Since we can't tell where the error happens and can't recover it.  So in the actual internet, the TCP and UDP use checksum while the link layer protocals use CRC.</p>
 <h3 id="crc">CRC</h3>
-<p>CRC is the abbr. of <strong>Cyclic Redundancy Check</strong></p>
+<p><strong>Cyclic Redundancy Check</strong>, or CRC, is a widely used verification technology in computer network. It is also called <strong>polynomial code</strong> since the message to be passed is regarded as the coefficient of a polynomial.<br />
+In this situation: if we gonna pass a message of <em>d</em> bits, the sender and the receiver must have a shared polynomial of <em>r</em> + 1 bits coefficient. This polynomial is called the <strong>generator</strong> G. The highest bit(the first bit from the left) must be 1.<br />
+For the <em>d</em> bits message, the sender must append <em>r</em> bits to get <em>d</em> + <em>r</em> bits binary code. This binary number is exactly divisible by G using mod 2 arithmetic.  </p>
+<blockquote>
+<h4 id="mod-2-arithmetic">Mod 2 arithmetic</h4>
+<p>Mod 2 arithmetic is a kind of special binary operations. It also has addition, subtraction, multiplication and division. However it doesn't consider carry and borrowing when adding and substracting numbers, which means that addition and subtraction are the same here. They are all actually XOR by bit.<br />
+For example, 1101 + 110 = 1011.<br />
+When doing multiplication, there's no carrying so 1001 * 1101 = 1100101. What is useful is multiply 2<sup>k</sup> is actually shifting left for k bits.
+For division, there's more rules:<br />
+When the residual's digit is less than the divider, the operation stops.
+When the dividend's digit is less than the divider, the quotient equals 0 and the dividend is the residual.  </p>
+</blockquote>
+<p>So the original message M with the appended <em>r</em> bits R can be represented by<br />
+D * 2<sup><em>r</em></sup> XOR R, which is the multiple of the generator G.<br />
+To calculate the R for a message M to pass, we just need the residual of<br />
+(D * 2<sup><em>r</em></sup>)/G.<br />
+IEEE has defined the standard generator G for 8, 12, 16 and 32 bits. Every standard can detect the errors less than <em>r</em> continuous bits.</p>
 <h3 id="raid">RAID</h3>
+<p>Let's dive into a practical example where verification and correction is used in storage. <strong>Redundant Array of Inexpensive Disks</strong> is a technique that allow computer regard a set of disks as a whole. And it allows damages to some extends and provides solutions to recover the damage depends on the RAID level. Different levels of RAID uses different ways of redundancy to provide different capacity, reliabliity and performance.  </p>
+<h4 id="raid-0-striping">RAID 0 - striping</h4>
+<h4 id="raid-1-mirror">RAID 1 - mirror</h4>
+<h4 id="raid-10-combined">RAID 10 - combined</h4>
+<h4 id="raid-4-parity">RAID 4 - parity</h4>
+<h4 id="raid-5-rotated-parity">RAID 5 - rotated parity</h4>
 <h2 id="encryption">Encryption</h2>
 <p>The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are <strong>Symmetric Encryption</strong> and <strong>Asymmetric Encryption</strong>.  </p>
 <h3 id="symmetric-encryption">Symmetric Encryption</h3>
