@@ -2,11 +2,31 @@ site_name: From Rookie to Master
 theme:
   name: material
   palette:
-    scheme: perference
-    primary: black
+    - scheme: default
+      toggle:
+        primary: blue
+        icon: material/brightness-7 
+        name: Switch to night mode
+    - scheme: slate
+      toggle:
+        primary: black
+        icon: material/brightness-4
+        name: Switch to day mode
+  repo_name: FR2M
+  repo_url: https://github.com/Li-Hourong/FR2M
   icon:
-    repo: fontawesome/brands/git-alt
-    repo_name: FR2M
-    repo_url: https://github.com/Li-Hourong/FR2M
+    repo: fontawesome/brands/github
   features:
     - navigation.tabs
+
+nav:
+- Start: index.md
+- Data Structure & Algorithm: DS&Algorithm.md
+- Computer Network: Computer Network.md
+- PLP: Programming Language Principle.md
+- Supplement: 
+    - Verification&Encryption: Parity&Encrypto.md
+    - Shell: Shell.md
+    - Documents: Markdown&Latex.md
+    - Sychronous&Asychronous: Sychronous&Asychronous.md
+    - Git&Github: Git&Github.md
