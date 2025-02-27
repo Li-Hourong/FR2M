@@ -4,3 +4,9 @@ theme:
   palette:
     scheme: perference
     primary: black
+  icon:
+    repo: fontawesome/brands/git-alt
+    repo_name: FR2M
+    repo_url: https://github.com/Li-Hourong/FR2M
+  features:
+    - navigation.tabs
