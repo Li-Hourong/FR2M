@@ -2,16 +2,8 @@ site_name: From Rookie to Master
 theme:
   name: material
   palette:
-    - scheme: default
-      toggle:
-        primary: blue
-        icon: material/brightness-7 
-        name: Switch to night mode
-    - scheme: slate
-      toggle:
-        primary: black
-        icon: material/brightness-4
-        name: Switch to day mode
+    primary: black
+    scheme: slate
   repo_name: FR2M
   repo_url: https://github.com/Li-Hourong/FR2M
   icon:
