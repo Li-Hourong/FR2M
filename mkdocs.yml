@@ -1,11 +1,27 @@
 site_name: From Rookie to Master
+repo_name: FR2M
+repo_url: https://github.com/Li-Hourong/FR2M
 theme:
   name: material
   palette:
-    primary: black
-    scheme: slate
-  repo_name: FR2M
-  repo_url: https://github.com/Li-Hourong/FR2M
+    - media: "(prefers-color-scheme)"
+      primary: pink
+      toggle:
+        icon: material/brightness-auto
+        name: 切换至浅色模式
+
+    - media: "(prefers-color-scheme: light)"
+      scheme: light
+      toggle:
+        icon: material/brightness-7
+        name: 切换至深色模式
+
+    - media: "(prefers-color-scheme: dark)"
+      scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: 根据系统模式切换主题
+
   icon:
     repo: fontawesome/brands/github
   features:

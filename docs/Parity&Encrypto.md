@@ -41,12 +41,27 @@ To calculate the R for a message M to pass, we just need the residual of
 IEEE has defined the standard generator G for 8, 12, 16 and 32 bits. Every standard can detect the errors less than *r* continuous bits.
 
 ### RAID
-Let's dive into a practical example where verification and correction is used in storage. **Redundant Array of Inexpensive Disks** is a technique that allow computer regard a set of disks as a whole. And it allows damages to some extends and provides solutions to recover the damage depends on the RAID level. Different levels of RAID uses different ways of redundancy to provide different capacity, reliabliity and performance.  
+Let's dive into a practical example where verification and correction is used in storage. **Redundant Array of Inexpensive Disks** is a technique that allow computer regard a set of disks as a whole. And it allows damages to some extends and provides solutions to recover the damage depends on the RAID level. Different levels of RAID uses different ways of redundancy to provide different capacity, reliabliity and performance. In order to simplify the following dicussion, let's suppose the read and write speed of a single disk is 1 GB/s, and the capacity of a single disk is 1 TB.  
 #### RAID 0 - striping
+RAID 0 is also called striping, since it doesn't have any redundancy but just provides an abstraction of the disks so that the computer recognize it as a single block of memory. But any files read in will be separated in multiple disks. The good points are that the capacity is n TB(suppose n is the number of disks). But it cannot afford any damage on any disk, or there will certainly be some irreversible data loss.  
+Concerning read/write performance, we have to notice that every file is spearated on multiple disks. This means that a RAID consists of n disks has a largeset therotical r/w speed of n GB/s. The actual r/w speed will be a little bit lower than the therotical one.
 #### RAID 1 - mirror
-#### RAID 10 - combined
+RAID 1 is known as mirror because all the data written in will be copied in 2 disks, so it can at most one disks to be damaged. But you have to guarentee one of the copies to be intact in order to recover.
+Due to the redundancy, the capacity will be 1 TB. When writing files in, since the file must be written for 2 copies, the highest speed will not be higher than 1 GB/s. Due to the sychornization of disks, the actual speed will be lower that. When reading single file, the speed will be the same as a single disk. But when reading multiple files, the task can be separated to 2 disks, achieving a highest therotical speed of 2 GB/s.
+#### RAID 10
+RAID is a combination of RAID 1 and RAID 0. RAID 10 first divided all the disks into multiple RAID 1 mirror pairs. Then organize all the pairs like RAID 0 striping. So constructing RAID 10 needs at least 4 disks. If we have 8 disks now, RAID 10 will divide them into 4 pairs and in every pair data will be copied. So the capacity of this RAID 10 will be 4 TB. And in every pair, the damage of one disk is affordable. So the array can afford at most half of the disks to be damaged.  
+When writing files in, the file will be separately stored in all the mirror pairs, and in every pair the part of the file will be copied and stored in both disks. No matter reading or writing, the array can parallely use all the port. So it has a much performance of r/w than a single disk.
 #### RAID 4 - parity
+It is obvious that RAID 1 brings a lot waste in storage space. If we want to use more of the space while still provides a basic redundancy for recovery, what should be chosen?  
+RAID 4 solved this using parity. If we have n disks this time, RAID 4 uses 1 of them to store the parity infomation and the others to store the data. So it has a capacity of n - 1 TB and can afford at most 1 disk to have failure.
+The reading performance is n - 1 GB/s. But considering writing performance, the thing will be different.In actual situation, the writing speed will also be limited by the update of the parity disk. If 2 files stored in 2 disks will be changed than the parity disk will also have to be changed since it carries all the precious parity infomation. However all the parity information are all on one disk, so writing in the parity information will be the slowest step.  
 #### RAID 5 - rotated parity
+To break the bottleneck of writing in the parity disk, RAID 5 came out. It smartly separat the parity information on different disks. For any file, it's own data will be stored on n - 1 disks, it's parity information will be stored in the last one. But for different files, the last disk to store parity information is different.  
+In RAID 5, the performance are basically the same as RAID 4, but sometimes better. So RAID 5 almost totally takes the place of RAID 4.
+#### The methods of realizing RAID
+There's still different levels of RAID not mentioned. But let's focus on a more important issue: How should we realize RAID?  
+In fact, RAID can be realized in both hardware and software. In special RAID device, the RAID controller has its own CPU, cache and memory. The hardware controller can manage the redundancy and IO operation independently from the OS.  
+The software solution don't need a special device to manage all the disks(which saves the owner the money to buy the controller). A software in OS will manage all the disks and the IO operations. However, this bring a loss of the r/w performance.
 
 ## Encryption
 The need of encryption appeared from a long time ago, when people need to tranmit some message secretly. Different encryption methods are widely used in network technologies nowadays. The main encryption technologies are **Symmetric Encryption** and **Asymmetric Encryption**.  
